@@ -18,13 +18,13 @@ namespace BiblioTech_v2.Controllers
             _context = context;
         }
 
-        // GET: Genero
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Generos.ToListAsync());
+            return _context.Generos != null ?
+                        View(await _context.Generos.ToListAsync()) :
+                        Problem("Entity set 'Contexto.Generos'  is null.");
         }
 
-        // GET: Genero/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Generos == null)
@@ -42,15 +42,11 @@ namespace BiblioTech_v2.Controllers
             return View(genero);
         }
 
-        // GET: Genero/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Genero/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Descricao")] Genero genero)
@@ -64,7 +60,6 @@ namespace BiblioTech_v2.Controllers
             return View(genero);
         }
 
-        // GET: Genero/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Generos == null)
@@ -80,9 +75,6 @@ namespace BiblioTech_v2.Controllers
             return View(genero);
         }
 
-        // POST: Genero/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Descricao")] Genero genero)
@@ -115,7 +107,6 @@ namespace BiblioTech_v2.Controllers
             return View(genero);
         }
 
-        // GET: Genero/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Generos == null)
@@ -133,7 +124,6 @@ namespace BiblioTech_v2.Controllers
             return View(genero);
         }
 
-        // POST: Genero/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -147,14 +137,14 @@ namespace BiblioTech_v2.Controllers
             {
                 _context.Generos.Remove(genero);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool GeneroExists(int id)
         {
-          return _context.Generos.Any(e => e.Id == id);
+            return (_context.Generos?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -18,13 +18,13 @@ namespace BiblioTech_v2.Controllers
             _context = context;
         }
 
-        // GET: Livro
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Livros.ToListAsync());
+            return _context.Livros != null ?
+                        View(await _context.Livros.ToListAsync()) :
+                        Problem("Entity set 'Contexto.Livros'  is null.");
         }
 
-        // GET: Livro/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Livros == null)
@@ -42,21 +42,25 @@ namespace BiblioTech_v2.Controllers
             return View(livro);
         }
 
-        // GET: Livro/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Livro/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,IdGenero,Titulo,Sinopse,Autor,Volume,Quantidade")] Livro livro)
         {
             if (ModelState.IsValid)
             {
+                var generoExists = await _context.Generos.AnyAsync(g => g.Id == livro.IdGenero);
+
+                if (!generoExists)
+                {
+                    ModelState.AddModelError("IdGenero", "O gênero selecionado não existe.");
+                    return View(livro);
+                }
+
                 _context.Add(livro);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -64,7 +68,6 @@ namespace BiblioTech_v2.Controllers
             return View(livro);
         }
 
-        // GET: Livro/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Livros == null)
@@ -80,9 +83,6 @@ namespace BiblioTech_v2.Controllers
             return View(livro);
         }
 
-        // POST: Livro/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,IdGenero,Titulo,Sinopse,Autor,Volume,Quantidade")] Livro livro)
@@ -94,6 +94,14 @@ namespace BiblioTech_v2.Controllers
 
             if (ModelState.IsValid)
             {
+                var generoExists = await _context.Generos.AnyAsync(g => g.Id == livro.IdGenero);
+
+                if (!generoExists)
+                {
+                    ModelState.AddModelError("IdGenero", "O gênero selecionado não existe.");
+                    return View(livro);
+                }
+
                 try
                 {
                     _context.Update(livro);
@@ -115,7 +123,6 @@ namespace BiblioTech_v2.Controllers
             return View(livro);
         }
 
-        // GET: Livro/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Livros == null)
@@ -133,7 +140,6 @@ namespace BiblioTech_v2.Controllers
             return View(livro);
         }
 
-        // POST: Livro/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -147,14 +153,14 @@ namespace BiblioTech_v2.Controllers
             {
                 _context.Livros.Remove(livro);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LivroExists(int id)
         {
-          return _context.Livros.Any(e => e.Id == id);
+            return (_context.Livros?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
