@@ -11,6 +11,21 @@
     <div class="form-group">
         <a asp-action="Create"><input type="submit" value="Cadastrar Usuário" class="btn btn-primary bg-success border-0" /></a>
     </div>
+
+    <form asp-action="Index" method="get" class="row g-3">
+        <div class="form-actions no-color row g-3">
+            <div class="col-md-5">
+                <label>Buscar</label>
+                <div class="input-group">
+                    <input type="text" name="busca" value="" class="form-control" placeholder="Usuario...">
+                    <div class="input-group-append" id="button-addon4">
+                        <input type="submit" value="Filtrar" class="btn btn-primary bg-warning text-dark border-0" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
     <br />
     <table class="table">
         <thead>
