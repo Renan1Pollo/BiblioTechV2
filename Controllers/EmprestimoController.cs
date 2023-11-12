@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BiblioTech_v2.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BiblioTech_v2.Controllers
 {
+    [Authorize]
     public class EmprestimoController : Controller
     {
         private readonly Contexto _context;
