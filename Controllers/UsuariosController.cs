@@ -20,11 +20,23 @@ namespace BiblioTech_v2.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string busca, string tipo)
         {
-            return _context.Usuarios != null ?
-                        View(await _context.Usuarios.ToListAsync()) :
-                        Problem("Entity set 'Contexto.Usuarios'  is null.");
+            List<Usuario> usuarios = _context.Usuarios.ToList();
+
+            if (busca != null && tipo != null)
+            {
+                if (tipo == "nome")
+                {
+                    usuarios = _context.Usuarios.Where(u => u.Nome.Contains(busca)).ToList();
+                }
+                else if (tipo == "ra")
+                {
+                    usuarios = _context.Usuarios.Where(u => u.RA.Contains(busca)).ToList();
+                } 
+            }
+
+            return View(usuarios);
         }
 
         public async Task<IActionResult> Details(int? id)

@@ -20,11 +20,16 @@ namespace BiblioTech_v2.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string busca)
         {
-            return _context.Generos != null ?
-                        View(await _context.Generos.ToListAsync()) :
-                        Problem("Entity set 'Contexto.Generos'  is null.");
+            List<Genero> generos = _context.Generos.ToList();
+
+            if (busca != null)
+            {
+                generos = _context.Generos.Where(g => g.Descricao.Contains(busca)).ToList();
+            }
+
+            return View(generos);
         }
 
         public async Task<IActionResult> Details(int? id)
