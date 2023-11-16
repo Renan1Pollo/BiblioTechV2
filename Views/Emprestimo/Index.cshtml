@@ -12,11 +12,21 @@
 
     <form asp-action="Index" method="get" class="row g-3">
         <div class="form-actions no-color row g-3">
+            <div class="col-md-2">
+                <label for="tipo">Filtrar</label>
+                <select class="form-select" name="tipo" id="tipo">
+                    <option value="todos" selected>Escolha...</option>
+                    <option value="produto">Produto</option>
+                    <option value="categoria">Categoria</option>
+                    <option value="fornecedor">Fornecedor</option>
+                </select>
+            </div>
+            <br />
             <div class="col-md-5">
                 <label>Buscar</label>
                 <div class="input-group">
                     <input type="text" name="busca" value="" class="form-control" placeholder="Emprestimo...">
-                    <div class="input-group-append" id="button-addon4">
+                    <div class="input-group-append" style="margin-left: 1rem" id="button-addon4">
                         <input type="submit" value="Filtrar" class="btn btn-primary bg-warning text-dark border-0" />
                     </div>
                 </div>
