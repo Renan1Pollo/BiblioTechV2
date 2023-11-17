@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BiblioTech_v2.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.CodeAnalysis.Options;
+using Newtonsoft.Json.Linq;
 
 namespace BiblioTech_v2.Controllers
 {
@@ -20,11 +22,29 @@ namespace BiblioTech_v2.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string busca, string tipo)
         {
-            return _context.Livros != null ?
-                        View(await _context.Livros.ToListAsync()) :
-                        Problem("Entity set 'Contexto.Livros'  is null.");
+            List<Livro> livros = _context.Livros.ToList();
+
+            if (busca != null && tipo != null)
+            {
+
+                if (tipo == "titulo")
+                {
+                    livros = _context.Livros.Where(l => l.Titulo.Contains(busca)).ToList();
+                }
+                else if (tipo == "genero")
+                {
+                    Genero genero = await _context.Generos.FirstOrDefaultAsync(g => g.Descricao.Contains(busca));
+                    livros = _context.Livros.Where(l => l.IdGenero == genero.Id).ToList();
+                }
+                else if (tipo == "autor")
+                {
+                    livros = _context.Livros.Where(l => l.Autor.Contains(busca)).ToList();
+                }
+            }
+
+            return View(livros);
         }
 
         public async Task<IActionResult> Details(int? id)

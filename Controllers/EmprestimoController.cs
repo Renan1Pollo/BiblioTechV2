@@ -20,11 +20,34 @@ namespace BiblioTech_v2.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string busca, string tipo)
         {
-            return _context.Emprestimos != null ?
-                        View(await _context.Emprestimos.ToListAsync()) :
-                        Problem("Entity set 'Contexto.Emprestimos'  is null.");
+            List<Emprestimo> emprestimos = _context.Emprestimos.ToList();
+
+            if (busca != null && tipo != null)
+            {
+
+                if (tipo == "usuario")
+                {
+                    Usuario usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Nome.Contains(busca));
+                    emprestimos = _context.Emprestimos.Where(e => e.IdLivro == usuario.Id).ToList();
+                }
+                else if (tipo == "titulo")
+                {
+                    Livro livro = await _context.Livros.FirstOrDefaultAsync(l => l.Titulo.Contains(busca));
+                    emprestimos = _context.Emprestimos.Where(e => e.IdLivro == livro.Id).ToList();
+                }
+                else if (tipo == "codUsuario")
+                {
+                    emprestimos = _context.Emprestimos.Where(e => e.IdUsuario == Convert.ToInt32(busca)).ToList();
+                }
+                else if (tipo == "codLivro")
+                {
+                    emprestimos = _context.Emprestimos.Where(e => e.IdLivro == Convert.ToInt32(busca)).ToList();
+                }
+            }
+
+            return View(emprestimos);
         }
 
         public async Task<IActionResult> Details(int? id)
