@@ -22,22 +22,23 @@ namespace BiblioTech_v2.Controllers
 
         public async Task<IActionResult> Index(string busca, string tipo)
         {
-            List<Usuario> usuarios = _context.Usuarios.ToList();
+            List<Usuario> usuarios = await _context.Usuarios.ToListAsync();
 
             if (busca != null && tipo != null)
             {
                 if (tipo == "nome")
                 {
-                    usuarios = _context.Usuarios.Where(u => u.Nome.Contains(busca)).ToList();
+                    usuarios = await _context.Usuarios.Where(u => u.Nome.Contains(busca)).ToListAsync();
                 }
                 else if (tipo == "ra")
                 {
-                    usuarios = _context.Usuarios.Where(u => u.RA.Contains(busca)).ToList();
-                } 
+                    usuarios = await _context.Usuarios.Where(u => u.RA.Contains(busca)).ToListAsync();
+                }
             }
 
             return View(usuarios);
         }
+
 
         public async Task<IActionResult> Details(int? id)
         {

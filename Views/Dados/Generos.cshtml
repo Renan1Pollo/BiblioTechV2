@@ -1,0 +1,41 @@
+﻿@model IEnumerable<BiblioTech_v2.Models.Genero>
+
+@{
+    ViewData["Title"] = "Listagem de Generos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section style="margin-top: 120px;">
+    <h1>Gerador de Generos</h1>
+    <br />
+    <div class="form-group">
+        <a asp-controller="Generos" asp-action="Index"><input type="submit" value="Voltar" class="btn btn-primary bg-danger border-0" /></a>
+    </div>
+
+    <br />
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descricao)
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </td>
+                </tr>
+            }
+            </tbody>
+    </table>
+</section>

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<BiblioTech_v2.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Listagem de Usuários";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section style="margin-top: 120px;">
+    <h1>Gerador de Usuarios</h1>
+    <br />
+    <div class="form-group">
+        <a asp-controller="Usuarios" asp-action="Index"><input type="submit" value="Voltar" class="btn btn-primary bg-danger border-0" /></a>
+    </div>
+
+    <br />
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RA)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RA)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
