@@ -33,6 +33,10 @@ namespace BiblioTech_v2.Controllers
                 {
                     livros = _context.Livros.Where(l => l.Titulo.Contains(busca)).ToList();
                 }
+                else if (tipo == "codGenero")
+                {
+                    livros = _context.Livros.Where(l => l.IdGenero == Convert.ToInt32(busca)).ToList();
+                }
                 else if (tipo == "genero")
                 {
                     Genero genero = await _context.Generos.FirstOrDefaultAsync(g => g.Descricao.Contains(busca));

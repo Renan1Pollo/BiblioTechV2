@@ -10,7 +10,7 @@ namespace BiblioTech_v2.Models
         [Display(Name = "Código")]
         public int Id { get; set; }
 
-        [Display(Name = "Descricão")]
+        [Display(Name = "Descrição")]
         [Required(ErrorMessage = "Campo Obrigatório!")]
         public string Descricao { get; set; }
     }
